@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import morgan from 'morgan';
 import { createStream, RotatingFileStream } from 'rotating-file-stream';
 import path from 'path';
+import router from './routes';
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,11 +18,7 @@ app.use(express.json());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.static("public"));
 
-app.get('/ping', async (_req: Request, res: Response) => {
-    res.send({
-        message: "pong ping"
-    });
-});
+app.use(router);
 
 app.listen(PORT, () => {
     console.log("Server is running on port", PORT);
