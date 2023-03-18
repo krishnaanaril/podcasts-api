@@ -1,0 +1,130 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Status": {
+				"enum": [
+					"true",
+					"false"
+				],
+				"type": "string"
+			},
+			"Category": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"id"
+				],
+				"type": "object"
+			},
+			"CategoriesResponse": {
+				"properties": {
+					"feeds": {
+						"items": {
+							"$ref": "#/components/schemas/Category"
+						},
+						"type": "array"
+					},
+					"description": {
+						"type": "string"
+					},
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"$ref": "#/components/schemas/Status"
+					}
+				},
+				"required": [
+					"feeds",
+					"description",
+					"count",
+					"status"
+				],
+				"type": "object"
+			},
+			"PingResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "podcasts-api",
+		"version": "1.0.0",
+		"description": "A wrapper api for podcast index",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Krishna Mohan A M"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/categories": {
+			"get": {
+				"operationId": "GetCategories",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CategoriesResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/ping": {
+			"get": {
+				"operationId": "GetMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PingResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
