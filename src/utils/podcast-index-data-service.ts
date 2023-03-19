@@ -18,6 +18,7 @@ export class PodcastIndexDataService implements DataService {
         sha1Hash.update(data4Hash);
         const hash4Header = sha1Hash.digest("hex");
         const userAgent = `${process.env.npm_package_name}/${process.env.npm_package_version}`;
+        console.log(`userAgent: ${userAgent}`)
 
         return {
             "Content-Type": "application/json",
