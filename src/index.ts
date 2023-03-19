@@ -17,7 +17,7 @@ const accessLogStream: RotatingFileStream = createStream('access.log', {
     path: path.join(process.cwd(), 'log')
 })
 
-app.use(cors({ origin: ['http://localhost:3000', 'https://api.krishnamohan.dev'], optionsSuccessStatus: 200}));
+app.use(cors({ origin: true, methods: ['GET'], optionsSuccessStatus: 200}));
 
 app.use(express.json());
 app.use(morgan("combined", { stream: accessLogStream }));
