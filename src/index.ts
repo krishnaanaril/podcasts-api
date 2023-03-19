@@ -3,6 +3,8 @@ import morgan from 'morgan';
 import { createStream, RotatingFileStream } from 'rotating-file-stream';
 import path from 'path';
 import swaggerUi from "swagger-ui-express";
+import cors from 'cors';
+
 import router from './routes';
 
 const PORT = process.env.PORT || 3000;
@@ -14,6 +16,8 @@ const accessLogStream: RotatingFileStream = createStream('access.log', {
     interval: '1d', // rotate daily
     path: path.join(process.cwd(), 'log')
 })
+
+app.use(cors({ origin: ['http://localhost:3000', 'https://api.krishnamohan.dev'], optionsSuccessStatus: 200}));
 
 app.use(express.json());
 app.use(morgan("combined", { stream: accessLogStream }));
