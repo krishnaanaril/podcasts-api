@@ -16,8 +16,13 @@ router.get("/ping", async (_req, res) => {
 });
 
 router.get("/categories", async (_req, res) => {  
-  const response = await controller.getCategories();
-  return res.send(response);
+  try {
+    const response = await controller.getCategories();
+    return res.send(response);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error in invocation of API: /categories" });
+  }
 });
 
 router.get("/stats", async (_req, res) => {  

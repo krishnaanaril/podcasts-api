@@ -12,6 +12,8 @@ export class PodcastIndexDataService implements DataService {
         const sha1Hash = crypto.createHash("sha1");
         const apiKey = process.env.API_KEY || '';
         const apiSecret = process.env.API_SECRET || '';
+        console.log(`apiKey: ${apiKey}`);
+        console.log(`apiSecret: ${apiSecret}`);
         const data4Hash = apiKey + apiSecret + currentTime;
         sha1Hash.update(data4Hash);
         const hash4Header = sha1Hash.digest("hex");
