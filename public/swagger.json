@@ -13,6 +13,21 @@
 				],
 				"type": "string"
 			},
+			"BaseResponse": {
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/Status"
+					}
+				},
+				"required": [
+					"description",
+					"status"
+				],
+				"type": "object"
+			},
 			"Category": {
 				"properties": {
 					"name": {
@@ -30,31 +45,398 @@
 				"type": "object"
 			},
 			"CategoriesResponse": {
-				"properties": {
-					"feeds": {
-						"items": {
-							"$ref": "#/components/schemas/Category"
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"feeds": {
+								"items": {
+									"$ref": "#/components/schemas/Category"
+								},
+								"type": "array"
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							}
 						},
-						"type": "array"
+						"required": [
+							"feeds",
+							"count"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"Stats": {
+				"properties": {
+					"feedsWithValueBlocks": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedsWithNewEpisodes90days": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedsWithNewEpisodes30days": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedsWithNewEpisodes10days": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedsWithNewEpisodes3days": {
+						"type": "number",
+						"format": "double"
+					},
+					"episodeCountTotal": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedCountTotal": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"feedsWithValueBlocks",
+					"feedsWithNewEpisodes90days",
+					"feedsWithNewEpisodes30days",
+					"feedsWithNewEpisodes10days",
+					"feedsWithNewEpisodes3days",
+					"episodeCountTotal",
+					"feedCountTotal"
+				],
+				"type": "object"
+			},
+			"StatsResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"stats": {
+								"$ref": "#/components/schemas/Stats"
+							}
+						},
+						"required": [
+							"stats"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"Record_number.string_": {
+				"properties": {},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
+			"Feed": {
+				"properties": {
+					"categories": {
+						"$ref": "#/components/schemas/Record_number.string_"
+					},
+					"language": {
+						"type": "string"
+					},
+					"trendScore": {
+						"type": "number",
+						"format": "double"
+					},
+					"itunesId": {
+						"type": "number",
+						"format": "double"
+					},
+					"newestItemPublishTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"artwork": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
 					},
 					"description": {
 						"type": "string"
 					},
-					"count": {
+					"title": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"id": {
 						"type": "number",
 						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/Status"
 					}
 				},
 				"required": [
-					"feeds",
+					"categories",
+					"language",
+					"trendScore",
+					"itunesId",
+					"newestItemPublishTime",
+					"artwork",
+					"image",
+					"author",
 					"description",
-					"count",
-					"status"
+					"title",
+					"url",
+					"id"
 				],
 				"type": "object"
+			},
+			"TrendingResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"since": {
+								"type": "number",
+								"format": "double"
+							},
+							"max": {
+								"type": "number",
+								"format": "double"
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							},
+							"feeds": {
+								"items": {
+									"$ref": "#/components/schemas/Feed"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"since",
+							"max",
+							"count",
+							"feeds"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"Item": {
+				"properties": {
+					"feedId": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedUrl": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedTitle": {
+						"type": "number",
+						"format": "double"
+					},
+					"episodeTitle": {
+						"type": "number",
+						"format": "double"
+					},
+					"episodeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"startTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"enclosureUrl": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"feedId",
+					"feedUrl",
+					"feedTitle",
+					"episodeTitle",
+					"episodeId",
+					"duration",
+					"startTime",
+					"title",
+					"enclosureUrl"
+				],
+				"type": "object"
+			},
+			"SoundbitesResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"items": {
+								"items": {
+									"$ref": "#/components/schemas/Item"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"items"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"SearchFeed": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Feed"
+					},
+					{
+						"properties": {
+							"newestItemPubdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"imageUrlHash": {
+								"type": "number",
+								"format": "double"
+							},
+							"locked": {
+								"type": "number",
+								"format": "double"
+							},
+							"parseErrors": {
+								"type": "number",
+								"format": "double"
+							},
+							"crawlErrors": {
+								"type": "number",
+								"format": "double"
+							},
+							"episodeCount": {
+								"type": "number",
+								"format": "double"
+							},
+							"dead": {
+								"type": "number",
+								"format": "double"
+							},
+							"type": {
+								"type": "number",
+								"format": "double"
+							},
+							"explicit": {
+								"type": "boolean"
+							},
+							"generator": {
+								"type": "string"
+							},
+							"contentType": {
+								"type": "string"
+							},
+							"lastHttpStatus": {
+								"type": "number",
+								"format": "double"
+							},
+							"lastGoodHttpStatusTime": {
+								"type": "number",
+								"format": "double"
+							},
+							"lastParseTime": {
+								"type": "number",
+								"format": "double"
+							},
+							"lastCrawlTime": {
+								"type": "number",
+								"format": "double"
+							},
+							"lastUpdateTime": {
+								"type": "number",
+								"format": "double"
+							},
+							"ownerName": {
+								"type": "string"
+							},
+							"link": {
+								"type": "string"
+							},
+							"originalUrl": {
+								"type": "string"
+							},
+							"podcastGuid": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"newestItemPubdate",
+							"imageUrlHash",
+							"locked",
+							"parseErrors",
+							"crawlErrors",
+							"episodeCount",
+							"dead",
+							"type",
+							"explicit",
+							"generator",
+							"contentType",
+							"lastHttpStatus",
+							"lastGoodHttpStatusTime",
+							"lastParseTime",
+							"lastCrawlTime",
+							"lastUpdateTime",
+							"ownerName",
+							"link",
+							"originalUrl",
+							"podcastGuid"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"SearchResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"query": {
+								"type": "string"
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							},
+							"feeds": {
+								"items": {
+									"$ref": "#/components/schemas/SearchFeed"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"query",
+							"count",
+							"feeds"
+						],
+						"type": "object"
+					}
+				]
 			},
 			"PingResponse": {
 				"properties": {
@@ -100,6 +482,161 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/stats": {
+			"get": {
+				"operationId": "GetStats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/StatsResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/trending": {
+			"get": {
+				"operationId": "GetTrending",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TrendingResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "max",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "lang",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "since",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "cat",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/soundbites": {
+			"get": {
+				"operationId": "GetSoundbites",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SoundbitesResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "max",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/search/byterm": {
+			"get": {
+				"operationId": "SearchByTerm",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SearchResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "q",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "clean",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "max",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fulltext",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				]
 			}
 		},
 		"/ping": {
