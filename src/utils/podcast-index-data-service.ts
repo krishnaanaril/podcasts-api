@@ -10,7 +10,9 @@ export class PodcastIndexDataService implements DataService {
     private generateHeaders() {
         const currentTime = Math.floor(Date.now() / 1000);
         const sha1Hash = crypto.createHash("sha1");
-        const data4Hash = PODCAST_INDEX.API_KEY + PODCAST_INDEX.API_SECRET + currentTime;
+        const apiKey = process.env.API_KEY || '';
+        const apiSecret = process.env.API_SECRET || '';
+        const data4Hash = apiKey + apiSecret + currentTime;
         sha1Hash.update(data4Hash);
         const hash4Header = sha1Hash.digest("hex");
         const userAgent = `${process.env.npm_package_name}/${process.env.npm_package_version}`;
@@ -18,7 +20,7 @@ export class PodcastIndexDataService implements DataService {
         return {
             "Content-Type": "application/json",
             "X-Auth-Date": `${currentTime}`,
-            "X-Auth-Key": PODCAST_INDEX.API_KEY,
+            "X-Auth-Key": apiKey,
             Authorization: hash4Header,
             "User-Agent": userAgent,
         };
@@ -55,7 +57,8 @@ export class PodcastIndexDataService implements DataService {
             method: `GET`,
             headers: this.generateHeaders(),
         };
-        const url = `${PODCAST_INDEX.API_URL}${endpoint}${queryString ? `?${queryString}` : ``}`;        
+        const apiUrl = process.env.API_URL;
+        const url = `${apiUrl}${endpoint}${queryString ? `?${queryString}` : ``}`;        
         return fetch(url, options).then((res) => {
             if (res.status >= 200 && res.status < 300) {
                 return res.json() as T;
