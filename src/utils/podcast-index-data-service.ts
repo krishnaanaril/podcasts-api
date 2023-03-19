@@ -58,6 +58,7 @@ export class PodcastIndexDataService implements DataService {
             headers: this.generateHeaders(),
         };
         const apiUrl = process.env.API_URL;
+        console.log(`apiUrl: ${apiUrl}`);
         const url = `${apiUrl}${endpoint}${queryString ? `?${queryString}` : ``}`;        
         return fetch(url, options).then((res) => {
             if (res.status >= 200 && res.status < 300) {

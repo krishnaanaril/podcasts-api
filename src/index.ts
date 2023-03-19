@@ -8,7 +8,12 @@ import dotEnv from "dotenv";
 
 import router from './routes';
 
-dotEnv.config();
+const env = process.env.NODE_ENV || 'development';
+console.log(`Current Environment: ${env}`);
+
+if(env !== "production") {
+    dotEnv.config();
+}
 
 const PORT = process.env.PORT || 3000;
 
@@ -24,8 +29,7 @@ app.use(cors({ origin: true, methods: ['GET'], optionsSuccessStatus: 200}));
 
 app.use(express.json());
 
-const env = process.env.NODE_ENV || 'development';
-console.log(`Current Environment: ${env}`);
+
 
 if(env === "production") {
     app.use(morgan("tiny"));
