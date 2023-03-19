@@ -40,12 +40,27 @@ router.get("/soundbites", async (_req, res) => {
   return res.send(response);
 });
 
-router.get("/search/byterm", async (_req, res) => {  
+router.get("/search", async (_req, res) => {  
   const q: string = _req.query.q as unknown as string;
   const max: number = _req.query.max as unknown as number;
   const clean: boolean = _req.query.clean === 'true';
   const fulltext: boolean = _req.query.fulltext  === 'true';
   const response = await controller.searchByTerm(q, clean, max, fulltext);
+  return res.send(response);
+});
+
+router.get("/podcastsFeed", async (_req, res) => { 
+  res.send('todo');
+});
+
+router.get("/episodesFeed", async (_req, res) => { 
+  res.send('todo');
+});
+
+router.get("/recentEpisodes", async (_req, res) => { 
+  const max: number = _req.query.max as unknown as number;  
+  const before: number = _req.query.before as unknown as number;  
+  const response = await controller.getRecentEpisodes(max, before);
   return res.send(response);
 });
 

@@ -1,7 +1,7 @@
 import { Get, Query, Route } from "tsoa";
 
 import { CategoriesResponse } from "../types/category";
-import { AnyQueryOptions, SearchResponse, SoundbitesResponse, StatsResponse, TrendingResponse } from '../types/shared';
+import { AnyQueryOptions, RecentEpisodesResponse, SearchResponse, SoundbitesResponse, StatsResponse, TrendingResponse } from '../types/shared';
 import { DataService } from '../types/data-service';
 
 @Route("/")
@@ -42,6 +42,31 @@ export default class CategoriesController {
         return result;
     }
 
+    @Get("/recentEpisodes")
+    public async getRecentEpisodes(
+        @Query() max?: number,        
+        @Query() before?: number        
+    ): Promise<RecentEpisodesResponse> {
+        let qs: AnyQueryOptions = {
+            max: max ?? 25,            
+            before: before            
+        };
+        const result = await this._dataService.fetch<RecentEpisodesResponse>("/recent/episodes", qs);
+        return result;
+    }
+
+    @Get("/podcastsFeed")
+    public async getPodcastsFeed(): Promise<TrendingResponse> {
+        const result = await this._dataService.fetch<TrendingResponse>("/podcasts/byfeedid");
+        return result;
+    }
+
+    @Get("/episodesFeed")
+    public async getEpisodesFeed(): Promise<TrendingResponse> {
+        const result = await this._dataService.fetch<TrendingResponse>("/episodes/byfeedid");
+        return result;
+    }
+
     @Get("/soundbites")
     public async getSoundbites(@Query() max?: number): Promise<SoundbitesResponse> {
         let qs: AnyQueryOptions = {
@@ -51,15 +76,13 @@ export default class CategoriesController {
         return result;
     }
 
-    @Get("/search/byterm")
+    @Get("/search")
     public async searchByTerm(
         @Query() q: string,
         @Query() clean?: boolean,
         @Query() max?: number,
         @Query() fulltext?: boolean
-    ): Promise<SearchResponse> {
-        console.log(clean, fulltext);
-        console.log(typeof clean, typeof max);
+    ): Promise<SearchResponse> {        
         let qs: AnyQueryOptions = {
             q: q,
             max: max ?? 25,

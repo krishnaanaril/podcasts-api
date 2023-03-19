@@ -24,20 +24,20 @@ export type Stats = {
 }
 
 export type StatsResponse = BaseResponse & {
-    stats: Stats;   
+    stats: Stats;
 }
 
 export type Feed = {
     id: number;
-    url: string; 
-    title: string; 
-    description: string; 
-    author: string; 
-    image: string; 
-    artwork: string; 
-    newestItemPublishTime: number; 
-    itunesId: number; 
-    trendScore: number; 
+    url: string;
+    title: string;
+    description: string;
+    author: string;
+    image: string;
+    artwork: string;
+    newestItemPublishTime: number;
+    itunesId: number;
+    trendScore: number;
     language: string;
     categories: Record<number, string>;
 }
@@ -92,4 +92,29 @@ export type SearchResponse = BaseResponse & {
     feeds: Array<SearchFeed>;
     count: number;
     query: string;
+}
+
+export type RecentEpisodeFeed = Feed & {
+    link: string;
+    guid: string
+    datePublished: number;
+    dateCrawled: number;
+    enclosureUrl: string;
+    enclosureType: string;
+    enclosureLength: number;
+    explicit: number;
+    episode: number;
+    episodeType: string;
+    season: number;
+    feedItunesId: number;
+    feedImage: string;
+    feedId: number;
+    feedTitle: string;
+    feedLanguage: string;
+}
+
+export type RecentEpisodesResponse = BaseResponse & {
+    items: Array<RecentEpisodeFeed>;
+    count: number;
+    max: number;
 }

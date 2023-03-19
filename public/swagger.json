@@ -230,6 +230,123 @@
 					}
 				]
 			},
+			"RecentEpisodeFeed": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Feed"
+					},
+					{
+						"properties": {
+							"feedLanguage": {
+								"type": "string"
+							},
+							"feedTitle": {
+								"type": "string"
+							},
+							"feedId": {
+								"type": "number",
+								"format": "double"
+							},
+							"feedImage": {
+								"type": "string"
+							},
+							"feedItunesId": {
+								"type": "number",
+								"format": "double"
+							},
+							"season": {
+								"type": "number",
+								"format": "double"
+							},
+							"episodeType": {
+								"type": "string"
+							},
+							"episode": {
+								"type": "number",
+								"format": "double"
+							},
+							"explicit": {
+								"type": "number",
+								"format": "double"
+							},
+							"enclosureLength": {
+								"type": "number",
+								"format": "double"
+							},
+							"enclosureType": {
+								"type": "string"
+							},
+							"enclosureUrl": {
+								"type": "string"
+							},
+							"dateCrawled": {
+								"type": "number",
+								"format": "double"
+							},
+							"datePublished": {
+								"type": "number",
+								"format": "double"
+							},
+							"guid": {
+								"type": "string"
+							},
+							"link": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"feedLanguage",
+							"feedTitle",
+							"feedId",
+							"feedImage",
+							"feedItunesId",
+							"season",
+							"episodeType",
+							"episode",
+							"explicit",
+							"enclosureLength",
+							"enclosureType",
+							"enclosureUrl",
+							"dateCrawled",
+							"datePublished",
+							"guid",
+							"link"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"RecentEpisodesResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"max": {
+								"type": "number",
+								"format": "double"
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							},
+							"items": {
+								"items": {
+									"$ref": "#/components/schemas/RecentEpisodeFeed"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"max",
+							"count",
+							"items"
+						],
+						"type": "object"
+					}
+				]
+			},
 			"Item": {
 				"properties": {
 					"feedId": {
@@ -557,6 +674,82 @@
 				]
 			}
 		},
+		"/recentEpisodes": {
+			"get": {
+				"operationId": "GetRecentEpisodes",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RecentEpisodesResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "max",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "before",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/podcastsFeed": {
+			"get": {
+				"operationId": "GetPodcastsFeed",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TrendingResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/episodesFeed": {
+			"get": {
+				"operationId": "GetEpisodesFeed",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TrendingResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/soundbites": {
 			"get": {
 				"operationId": "GetSoundbites",
@@ -586,7 +779,7 @@
 				]
 			}
 		},
-		"/search/byterm": {
+		"/search": {
 			"get": {
 				"operationId": "SearchByTerm",
 				"responses": {

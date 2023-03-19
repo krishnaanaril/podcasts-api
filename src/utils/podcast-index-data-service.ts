@@ -49,15 +49,13 @@ export class PodcastIndexDataService implements DataService {
             .join("&");
     }
 
-    public fetch<T>(endpoint: string, qs?: AnyQueryOptions): Promise<T> {
-        console.log(qs);
+    public fetch<T>(endpoint: string, qs?: AnyQueryOptions): Promise<T> {        
         const queryString = qs ? this.encodeObjectToQueryString(qs) : null;
         const options = {
             method: `GET`,
             headers: this.generateHeaders(),
         };
-        const url = `${PODCAST_INDEX.API_URL}${endpoint}${queryString ? `?${queryString}` : ``}`;
-        console.log(url);
+        const url = `${PODCAST_INDEX.API_URL}${endpoint}${queryString ? `?${queryString}` : ``}`;        
         return fetch(url, options).then((res) => {
             if (res.status >= 200 && res.status < 300) {
                 return res.json() as T;
