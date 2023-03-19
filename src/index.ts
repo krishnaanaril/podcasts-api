@@ -4,8 +4,11 @@ import { createStream, RotatingFileStream } from 'rotating-file-stream';
 import path from 'path';
 import swaggerUi from "swagger-ui-express";
 import cors from 'cors';
+import dotEnv from "dotenv";
 
 import router from './routes';
+
+dotEnv.config();
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,7 +23,16 @@ const accessLogStream: RotatingFileStream = createStream('access.log', {
 app.use(cors({ origin: true, methods: ['GET'], optionsSuccessStatus: 200}));
 
 app.use(express.json());
-app.use(morgan("combined", { stream: accessLogStream }));
+
+const env = process.env.NODE_ENV || 'development';
+console.log(`Current Environment: ${env}`);
+
+if(env === "production") {
+    app.use(morgan("tiny"));
+} else {
+    app.use(morgan("combined", { stream: accessLogStream }));
+}
+
 app.use(express.static("public"));
 
 app.use(
