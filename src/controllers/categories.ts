@@ -1,7 +1,16 @@
 import { Get, Query, Route } from "tsoa";
 
 import { CategoriesResponse } from "../types/category";
-import { AnyQueryOptions, RecentEpisodesResponse, SearchResponse, SoundbitesResponse, StatsResponse, TrendingResponse } from '../types/shared';
+import { 
+    AnyQueryOptions, 
+    RecentEpisodesResponse, 
+    RecentFeedsResponse, 
+    SearchResponse, 
+    SoundbitesResponse, 
+    StatsResponse, 
+    TrendingResponse, 
+    Value 
+} from '../types/shared';
 import { DataService } from '../types/data-service';
 
 @Route("/")
@@ -45,7 +54,9 @@ export default class CategoriesController {
     }    
 
     @Get("/recent/soundbites")
-    public async getSoundbites(@Query() max?: number): Promise<SoundbitesResponse> {
+    public async getSoundbites(
+        @Query() max?: number
+    ): Promise<SoundbitesResponse> {
         let qs: AnyQueryOptions = {
             max: max
         };
@@ -56,13 +67,36 @@ export default class CategoriesController {
     @Get("/recent/episodes")
     public async getRecentEpisodes(
         @Query() max?: number,        
-        @Query() before?: number        
+        @Query() before?: number,
+        @Query() excludeString?: string,
+        @Query() fulltext?: boolean           
     ): Promise<RecentEpisodesResponse> {
         let qs: AnyQueryOptions = {
-            max: max ?? 25,            
-            before: before            
+            max: max ?? 25,   
+            excludeString: excludeString,         
+            before: before,
+            fulltext: fulltext            
         };
         const result = await this._dataService.fetch<RecentEpisodesResponse>("/recent/episodes", qs);
+        return result;
+    }
+
+    @Get("/recent/feeds")
+    public async getRecentFeeds(
+        @Query() max?: number,
+        @Query() lang?: string,
+        @Query() since?: number,
+        @Query() cat?: string,
+        @Query() notcat?: string
+    ): Promise<RecentFeedsResponse> {
+        let qs: AnyQueryOptions = {
+            max: max ?? 25,
+            lang: lang ?? 'en',
+            since: since,
+            cat: cat,
+            notcat:  notcat
+        };
+        const result = await this._dataService.fetch<RecentFeedsResponse>("/recent/feeds", qs);
         return result;
     }
 
@@ -83,11 +117,15 @@ export default class CategoriesController {
         @Query() q: string,
         @Query() clean?: boolean,
         @Query() max?: number,
-        @Query() fulltext?: boolean
+        @Query() fulltext?: boolean,
+        @Query() val?: Value,
+        @Query() aponly?: boolean
     ): Promise<SearchResponse> {        
         let qs: AnyQueryOptions = {
             q: q,
             max: max ?? 25,
+            val: val,
+            aponly: aponly,
             clean: clean,
             fulltext: fulltext,
         };

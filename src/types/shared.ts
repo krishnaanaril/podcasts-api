@@ -3,6 +3,13 @@ export enum Status {
     False = "false"
 }
 
+export enum Value {
+    Any = "any",
+    Lightning = "lightning",
+    Hive = "hive",
+    WebMonetization = "webmonetization",
+}
+
 export type AnyQueryOptions = Record<
     string,
     string | string[] | number | number[] | boolean | undefined
@@ -117,4 +124,15 @@ export type RecentEpisodesResponse = BaseResponse & {
     items: Array<RecentEpisodeFeed>;
     count: number;
     max: number;
+}
+
+export type RecentPodcastFeed = Omit<Feed, "description | author | image | artwork | trendScore"> & {
+    oldestItemPublishTime: number;
+}
+
+export type RecentFeedsResponse = BaseResponse & {
+    feeds: RecentPodcastFeed;
+    count: number;
+    max: number;
+    since: number;
 }

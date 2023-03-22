@@ -418,6 +418,122 @@
 					}
 				]
 			},
+			"Pick_Feed.Exclude_keyofFeed.description-or-author-or-image-or-artwork-or-trendScore__": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"url": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"artwork": {
+						"type": "string"
+					},
+					"newestItemPublishTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"itunesId": {
+						"type": "number",
+						"format": "double"
+					},
+					"trendScore": {
+						"type": "number",
+						"format": "double"
+					},
+					"language": {
+						"type": "string"
+					},
+					"categories": {
+						"$ref": "#/components/schemas/Record_number.string_"
+					}
+				},
+				"required": [
+					"id",
+					"url",
+					"title",
+					"description",
+					"author",
+					"image",
+					"artwork",
+					"newestItemPublishTime",
+					"itunesId",
+					"trendScore",
+					"language",
+					"categories"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_Feed.description-or-author-or-image-or-artwork-or-trendScore_": {
+				"$ref": "#/components/schemas/Pick_Feed.Exclude_keyofFeed.description-or-author-or-image-or-artwork-or-trendScore__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"RecentPodcastFeed": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Omit_Feed.description-or-author-or-image-or-artwork-or-trendScore_"
+					},
+					{
+						"properties": {
+							"oldestItemPublishTime": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"oldestItemPublishTime"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"RecentFeedsResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"since": {
+								"type": "number",
+								"format": "double"
+							},
+							"max": {
+								"type": "number",
+								"format": "double"
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							},
+							"feeds": {
+								"$ref": "#/components/schemas/RecentPodcastFeed"
+							}
+						},
+						"required": [
+							"since",
+							"max",
+							"count",
+							"feeds"
+						],
+						"type": "object"
+					}
+				]
+			},
 			"SearchFeed": {
 				"allOf": [
 					{
@@ -554,6 +670,15 @@
 						"type": "object"
 					}
 				]
+			},
+			"Value": {
+				"enum": [
+					"any",
+					"lightning",
+					"hive",
+					"webmonetization"
+				],
+				"type": "string"
 			},
 			"PingResponse": {
 				"properties": {
@@ -745,6 +870,84 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "excludeString",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fulltext",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				]
+			}
+		},
+		"/recent/feeds": {
+			"get": {
+				"operationId": "GetRecentFeeds",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RecentFeedsResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "max",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "lang",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "since",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "cat",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "notcat",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
@@ -832,6 +1035,22 @@
 					{
 						"in": "query",
 						"name": "fulltext",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "val",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Value"
+						}
+					},
+					{
+						"in": "query",
+						"name": "aponly",
 						"required": false,
 						"schema": {
 							"type": "boolean"

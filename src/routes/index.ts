@@ -3,6 +3,7 @@ import { ByteLengthQueuingStrategy } from "stream/web";
 import CategoriesController from "../controllers/categories";
 import PingController from "../controllers/ping";
 import { DataService } from "../types/data-service";
+import { Value } from "../types/shared";
 import { PodcastIndexDataService } from "../utils/podcast-index-data-service";
 
 const router = express.Router();
@@ -66,10 +67,12 @@ router.get("/recent/soundbites", async (_req, res) => {
  */
 router.get("/search/byterm", async (_req, res) => {  
   const q: string = _req.query.q as unknown as string;
+  const val: Value = _req.query.val as unknown as Value;
+  const aponly: boolean = _req.query.aponly as unknown as boolean;
   const max: number = _req.query.max as unknown as number;
   const clean: boolean = _req.query.clean === 'true';
   const fulltext: boolean = _req.query.fulltext  === 'true';
-  const response = await controller.searchByTerm(q, clean, max, fulltext);
+  const response = await controller.searchByTerm(q, clean, max, fulltext, val, aponly);
   return res.send(response);
 });
 
@@ -81,10 +84,23 @@ router.get("/episodes/byfeedid", async (_req, res) => {
   res.send('todo');
 });
 
+router.get("/recent/feeds", async (_req, res) => { 
+  const max: number = _req.query.max as unknown as number;
+  const lang: string = _req.query.lang as unknown as string;
+  const since: number = _req.query.since as unknown as number;
+  const cat: string = _req.query.cat as unknown as string; 
+  const notcat: string = _req.query.cat as unknown as string;
+  const response = await controller.getRecentFeeds(max, lang, since, cat, notcat);
+  return res.send(response);
+  res.send('todo');
+});
+
 router.get("/recent/episodes", async (_req, res) => { 
-  const max: number = _req.query.max as unknown as number;  
+  const max: number = _req.query.max as unknown as number; 
+  const excludeString: string = _req.query.max as unknown as string;  
   const before: number = _req.query.before as unknown as number;  
-  const response = await controller.getRecentEpisodes(max, before);
+  const fulltext: boolean = _req.query.max as unknown as boolean; 
+  const response = await controller.getRecentEpisodes(max, before, excludeString, fulltext);
   return res.send(response);
 });
 
