@@ -10,6 +10,36 @@ export enum Value {
     WebMonetization = "webmonetization",
 }
 
+export enum LiveStatus {
+    Ended = "ended",
+    Live = "live"
+}
+
+export enum TranscriptType {
+    Plain = "text/plain",
+    HTML = "text/html",
+    SRT = "application/srt",
+    VTT = "text/vtt",
+    Json = "application/json",
+}
+
+export enum SocialProtocol {
+    Disabled = "disabled",
+    ActivityPub = "activitypub",
+    Twitter = "twitter",
+    Lightning = "lightning",
+}
+
+export enum Medium {
+    AudioBook = "audiobook",
+    Blog = "blog ",
+    Film = "film",
+    Music = "music",
+    Newsletter = "newsletter",
+    Podcast = "podcast",
+    Video = "video",
+}
+
 export type AnyQueryOptions = Record<
     string,
     string | string[] | number | number[] | boolean | undefined
@@ -18,6 +48,64 @@ export type AnyQueryOptions = Record<
 export type BaseResponse = {
     status: Status;
     description: string;
+}
+
+export type Funding = {
+    url: string;
+    message: string;
+}
+
+export type ValueModel = {
+    type: Value;
+    method: string;
+    suggested: string;
+}
+
+export type ValueForValue = {
+    model: ValueModel;
+    destinations: Array<Destination>;
+}
+
+export type Destination = {
+    name: string;
+    address: string;
+    type: unknown;
+    split: number;
+    fee: boolean;
+    customKey: string;
+    customValue: string;
+}
+
+export type Query = {
+    id: string;
+}
+
+export type Transcript = {
+    url: string;
+    type: TranscriptType;
+}
+
+export type Soundbite = {
+    startTime: number;
+    duration: number;
+    title: string;
+}
+
+export type Person = {
+    id: number;
+    name: string;
+    role: string;
+    group: string
+    href: string
+    img: string
+}
+
+export type SocialInteract = {
+    url: string;
+    protocol: SocialProtocol;
+    accountId: string;
+    accountUrl: string;
+    priority: number;
 }
 
 export type Stats = {
@@ -135,4 +223,59 @@ export type RecentFeedsResponse = BaseResponse & {
     count: number;
     max: number;
     since: number;
+}
+
+export type PodcastsByIdFeed = SearchFeed & {
+    itunesType: string;
+    chash: string;
+    value: unknown; // Work in progress
+    funding: Funding;
+}
+
+export type PodcastsByIdResponse = BaseResponse & {
+    query: Query;
+    feed: PodcastsByIdFeed;
+}
+
+export type PodcastsByMediumFeed = SearchFeed & {
+    //TODO
+}
+
+export type PodcastsByMediumResponse = BaseResponse & {
+    feeds: Array<PodcastsByMediumFeed>;
+    count: number;
+    medium: string;
+}
+
+export type EpisodesByIdLiveItems = RecentEpisodeFeed & {
+    startTime: number;
+    endTime: number;
+    status: LiveStatus;
+    contentLink: string;
+    duration: number;
+    feedDead: number;
+    feedDuplicateOf: number;
+    chaptersUrl: string;
+    transcriptUrl: string;
+}
+
+export type EpisodesByIdItems = RecentEpisodeFeed & {
+    duration: number;
+    feedDead: number;
+    feedDuplicateOf: number;
+    chaptersUrl: string;
+    transcriptUrl: string;
+    transcripts: Array<Transcript>;
+    soundbite: Soundbite;
+    soundbites: Array<Soundbite>;
+    persons: Array<Person>;
+    socialInteract: Array<SocialInteract>;
+    value: ValueForValue;
+}
+
+export type EpisodesByIdResponse = BaseResponse & {
+    liveItems: Array<EpisodesByIdLiveItems>;
+    items: Array<EpisodesByIdItems>;
+    count: number;
+    query: string | string[];
 }

@@ -1,15 +1,18 @@
 import { Get, Query, Route } from "tsoa";
 
 import { CategoriesResponse } from "../types/category";
-import { 
-    AnyQueryOptions, 
-    RecentEpisodesResponse, 
-    RecentFeedsResponse, 
-    SearchResponse, 
-    SoundbitesResponse, 
-    StatsResponse, 
-    TrendingResponse, 
-    Value 
+import {
+    AnyQueryOptions,
+    EpisodesByIdResponse,
+    Medium,
+    PodcastsByIdResponse,
+    RecentEpisodesResponse,
+    RecentFeedsResponse,
+    SearchResponse,
+    SoundbitesResponse,
+    StatsResponse,
+    TrendingResponse,
+    Value
 } from '../types/shared';
 import { DataService } from '../types/data-service';
 
@@ -47,11 +50,11 @@ export default class CategoriesController {
             lang: lang ?? 'en',
             since: since,
             cat: cat,
-            notcat:  notcat
+            notcat: notcat
         };
         const result = await this._dataService.fetch<TrendingResponse>("/podcasts/trending", qs);
         return result;
-    }    
+    }
 
     @Get("/recent/soundbites")
     public async getSoundbites(
@@ -66,16 +69,16 @@ export default class CategoriesController {
 
     @Get("/recent/episodes")
     public async getRecentEpisodes(
-        @Query() max?: number,        
+        @Query() max?: number,
         @Query() before?: number,
         @Query() excludeString?: string,
-        @Query() fulltext?: boolean           
+        @Query() fulltext?: boolean
     ): Promise<RecentEpisodesResponse> {
         let qs: AnyQueryOptions = {
-            max: max ?? 25,   
-            excludeString: excludeString,         
+            max: max ?? 25,
+            excludeString: excludeString,
             before: before,
-            fulltext: fulltext            
+            fulltext: fulltext
         };
         const result = await this._dataService.fetch<RecentEpisodesResponse>("/recent/episodes", qs);
         return result;
@@ -94,21 +97,43 @@ export default class CategoriesController {
             lang: lang ?? 'en',
             since: since,
             cat: cat,
-            notcat:  notcat
+            notcat: notcat
         };
         const result = await this._dataService.fetch<RecentFeedsResponse>("/recent/feeds", qs);
         return result;
     }
 
     @Get("/podcasts/byfeedid")
-    public async getPodcastsFeed(): Promise<TrendingResponse> {
-        const result = await this._dataService.fetch<TrendingResponse>("/podcasts/byfeedid");
+    public async getPodcastsById(
+        @Query() id?: number,
+    ): Promise<PodcastsByIdResponse> {
+        let qs: AnyQueryOptions = {
+            id
+        }
+        const result = await this._dataService.fetch<PodcastsByIdResponse>("/podcasts/byfeedid", qs);
+        return result;
+    }
+
+    @Get("/podcasts/bymedium")
+    public async getPodcastsByMedium(
+        @Query() medium?: Medium,
+    ): Promise<PodcastsByIdResponse> {
+        let qs: AnyQueryOptions = {
+            medium
+        }
+        console.log(qs, medium);
+        const result = await this._dataService.fetch<PodcastsByIdResponse>("/podcasts/bymedium", qs);
         return result;
     }
 
     @Get("/episodes/byfeedid")
-    public async getEpisodesFeed(): Promise<TrendingResponse> {
-        const result = await this._dataService.fetch<TrendingResponse>("/episodes/byfeedid");
+    public async getEpisodesById(
+        @Query() id?: string,
+    ): Promise<EpisodesByIdResponse> {
+        let qs: AnyQueryOptions = {
+            id
+        }
+        const result = await this._dataService.fetch<EpisodesByIdResponse>("/episodes/byfeedid", qs);
         return result;
     }
 
@@ -120,7 +145,7 @@ export default class CategoriesController {
         @Query() fulltext?: boolean,
         @Query() val?: Value,
         @Query() aponly?: boolean
-    ): Promise<SearchResponse> {        
+    ): Promise<SearchResponse> {
         let qs: AnyQueryOptions = {
             q: q,
             max: max ?? 25,
