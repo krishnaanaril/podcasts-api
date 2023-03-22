@@ -30,13 +30,15 @@ export default class CategoriesController {
         @Query() max?: number,
         @Query() lang?: string,
         @Query() since?: number,
-        @Query() cat?: string
+        @Query() cat?: string,
+        @Query() notcat?: string
     ): Promise<TrendingResponse> {
         let qs: AnyQueryOptions = {
             max: max ?? 25,
             lang: lang ?? 'en',
             since: since,
-            cat: cat
+            cat: cat,
+            notcat:  notcat
         };
         const result = await this._dataService.fetch<TrendingResponse>("/podcasts/trending", qs);
         return result;

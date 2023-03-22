@@ -46,8 +46,9 @@ router.get("/podcasts/trending", async (_req, res) => {
   const max: number = _req.query.max as unknown as number;
   const lang: string = _req.query.lang as unknown as string;
   const since: number = _req.query.since as unknown as number;
-  const cat: string = _req.query.cat as unknown as string;
-  const response = await controller.getTrending(max, lang, since, cat);
+  const cat: string = _req.query.cat as unknown as string; 
+  const notcat: string = _req.query.cat as unknown as string;
+  const response = await controller.getTrending(max, lang, since, cat, notcat);
   return res.send(response);
 });
 
