@@ -9,13 +9,19 @@ const router = express.Router();
 const dataService: DataService = new PodcastIndexDataService();
 const controller = new CategoriesController(dataService);
 
+/**
+ * Endpoint to verify the health of the service
+ */
 router.get("/ping", async (_req, res) => {
   const controller = new PingController();
   const response = await controller.getMessage();
   return res.send(response);
 });
 
-router.get("/categories", async (_req, res) => {  
+/**
+ * Get list of all podcast categories
+ */
+router.get("/categories/list", async (_req, res) => {  
   try {
     const response = await controller.getCategories();
     return res.send(response);
@@ -25,12 +31,18 @@ router.get("/categories", async (_req, res) => {
   }
 });
 
-router.get("/stats", async (_req, res) => {  
+/**
+ * Get stats of podcasts
+ */
+router.get("/stats/current", async (_req, res) => {  
   const response = await controller.getStats();
   return res.send(response);
 });
 
-router.get("/trending", async (_req, res) => {  
+/**
+ * Get trending podcasts
+ */
+router.get("/podcasts/trending", async (_req, res) => {  
   const max: number = _req.query.max as unknown as number;
   const lang: string = _req.query.lang as unknown as string;
   const since: number = _req.query.since as unknown as number;
@@ -39,13 +51,19 @@ router.get("/trending", async (_req, res) => {
   return res.send(response);
 });
 
-router.get("/soundbites", async (_req, res) => {  
+/**
+ * Gets the most recent soundbites
+ */
+router.get("/recent/soundbites", async (_req, res) => {  
   const max: number = _req.query.max as unknown as number;
   const response = await controller.getSoundbites(max);
   return res.send(response);
 });
 
-router.get("/search", async (_req, res) => {  
+/**
+ * Gets list of podcasts that matched the term
+ */
+router.get("/search/byterm", async (_req, res) => {  
   const q: string = _req.query.q as unknown as string;
   const max: number = _req.query.max as unknown as number;
   const clean: boolean = _req.query.clean === 'true';
@@ -54,19 +72,21 @@ router.get("/search", async (_req, res) => {
   return res.send(response);
 });
 
-router.get("/podcastsFeed", async (_req, res) => { 
+router.get("/podcasts/byfeedid", async (_req, res) => { 
   res.send('todo');
 });
 
-router.get("/episodesFeed", async (_req, res) => { 
+router.get("/episodes/byfeedid", async (_req, res) => { 
   res.send('todo');
 });
 
-router.get("/recentEpisodes", async (_req, res) => { 
+router.get("/recent/episodes", async (_req, res) => { 
   const max: number = _req.query.max as unknown as number;  
   const before: number = _req.query.before as unknown as number;  
   const response = await controller.getRecentEpisodes(max, before);
   return res.send(response);
 });
+
+// TODO: Implement '/podcasts/bymedium'
 
 export default router;

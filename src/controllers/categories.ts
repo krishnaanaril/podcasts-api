@@ -13,19 +13,19 @@ export default class CategoriesController {
         this._dataService = dataService;
     }
 
-    @Get("/categories")
+    @Get("/categories/list")
     public async getCategories(): Promise<CategoriesResponse> {
         const result = await this._dataService.fetch<CategoriesResponse>("/categories/list");
         return result;
     }
 
-    @Get("/stats")
+    @Get("/stats/current")
     public async getStats(): Promise<StatsResponse> {
         const result = await this._dataService.fetch<StatsResponse>("/stats/current");
         return result;
     }
 
-    @Get("/trending")
+    @Get("/podcasts/trending")
     public async getTrending(
         @Query() max?: number,
         @Query() lang?: string,
@@ -40,9 +40,18 @@ export default class CategoriesController {
         };
         const result = await this._dataService.fetch<TrendingResponse>("/podcasts/trending", qs);
         return result;
+    }    
+
+    @Get("/recent/soundbites")
+    public async getSoundbites(@Query() max?: number): Promise<SoundbitesResponse> {
+        let qs: AnyQueryOptions = {
+            max: max
+        };
+        const result = await this._dataService.fetch<SoundbitesResponse>("/recent/soundbites", qs);
+        return result;
     }
 
-    @Get("/recentEpisodes")
+    @Get("/recent/episodes")
     public async getRecentEpisodes(
         @Query() max?: number,        
         @Query() before?: number        
@@ -55,28 +64,19 @@ export default class CategoriesController {
         return result;
     }
 
-    @Get("/podcastsFeed")
+    @Get("/podcasts/byfeedid")
     public async getPodcastsFeed(): Promise<TrendingResponse> {
         const result = await this._dataService.fetch<TrendingResponse>("/podcasts/byfeedid");
         return result;
     }
 
-    @Get("/episodesFeed")
+    @Get("/episodes/byfeedid")
     public async getEpisodesFeed(): Promise<TrendingResponse> {
         const result = await this._dataService.fetch<TrendingResponse>("/episodes/byfeedid");
         return result;
     }
 
-    @Get("/soundbites")
-    public async getSoundbites(@Query() max?: number): Promise<SoundbitesResponse> {
-        let qs: AnyQueryOptions = {
-            max: max
-        };
-        const result = await this._dataService.fetch<SoundbitesResponse>("/recent/soundbites", qs);
-        return result;
-    }
-
-    @Get("/search")
+    @Get("/search/byterm")
     public async searchByTerm(
         @Query() q: string,
         @Query() clean?: boolean,
