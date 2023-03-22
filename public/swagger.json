@@ -230,6 +230,77 @@
 					}
 				]
 			},
+			"Item": {
+				"properties": {
+					"feedId": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedUrl": {
+						"type": "number",
+						"format": "double"
+					},
+					"feedTitle": {
+						"type": "number",
+						"format": "double"
+					},
+					"episodeTitle": {
+						"type": "number",
+						"format": "double"
+					},
+					"episodeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"startTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"enclosureUrl": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"feedId",
+					"feedUrl",
+					"feedTitle",
+					"episodeTitle",
+					"episodeId",
+					"duration",
+					"startTime",
+					"title",
+					"enclosureUrl"
+				],
+				"type": "object"
+			},
+			"SoundbitesResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"items": {
+								"items": {
+									"$ref": "#/components/schemas/Item"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"items"
+						],
+						"type": "object"
+					}
+				]
+			},
 			"RecentEpisodeFeed": {
 				"allOf": [
 					{
@@ -347,76 +418,132 @@
 					}
 				]
 			},
-			"Item": {
+			"Pick_Feed.Exclude_keyofFeed.description-or-author-or-image-or-artwork-or-trendScore__": {
 				"properties": {
-					"feedId": {
+					"id": {
 						"type": "number",
 						"format": "double"
 					},
-					"feedUrl": {
-						"type": "number",
-						"format": "double"
-					},
-					"feedTitle": {
-						"type": "number",
-						"format": "double"
-					},
-					"episodeTitle": {
-						"type": "number",
-						"format": "double"
-					},
-					"episodeId": {
-						"type": "number",
-						"format": "double"
-					},
-					"duration": {
-						"type": "number",
-						"format": "double"
-					},
-					"startTime": {
-						"type": "number",
-						"format": "double"
+					"url": {
+						"type": "string"
 					},
 					"title": {
 						"type": "string"
 					},
-					"enclosureUrl": {
+					"description": {
 						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"artwork": {
+						"type": "string"
+					},
+					"newestItemPublishTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"itunesId": {
+						"type": "number",
+						"format": "double"
+					},
+					"trendScore": {
+						"type": "number",
+						"format": "double"
+					},
+					"language": {
+						"type": "string"
+					},
+					"categories": {
+						"$ref": "#/components/schemas/Record_number.string_"
 					}
 				},
 				"required": [
-					"feedId",
-					"feedUrl",
-					"feedTitle",
-					"episodeTitle",
-					"episodeId",
-					"duration",
-					"startTime",
+					"id",
+					"url",
 					"title",
-					"enclosureUrl"
+					"description",
+					"author",
+					"image",
+					"artwork",
+					"newestItemPublishTime",
+					"itunesId",
+					"trendScore",
+					"language",
+					"categories"
 				],
-				"type": "object"
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"SoundbitesResponse": {
+			"Omit_Feed.description-or-author-or-image-or-artwork-or-trendScore_": {
+				"$ref": "#/components/schemas/Pick_Feed.Exclude_keyofFeed.description-or-author-or-image-or-artwork-or-trendScore__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"RecentPodcastFeed": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Omit_Feed.description-or-author-or-image-or-artwork-or-trendScore_"
+					},
+					{
+						"properties": {
+							"oldestItemPublishTime": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"oldestItemPublishTime"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"RecentFeedsResponse": {
 				"allOf": [
 					{
 						"$ref": "#/components/schemas/BaseResponse"
 					},
 					{
 						"properties": {
-							"items": {
-								"items": {
-									"$ref": "#/components/schemas/Item"
-								},
-								"type": "array"
+							"since": {
+								"type": "number",
+								"format": "double"
+							},
+							"max": {
+								"type": "number",
+								"format": "double"
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							},
+							"feeds": {
+								"$ref": "#/components/schemas/RecentPodcastFeed"
 							}
 						},
 						"required": [
-							"items"
+							"since",
+							"max",
+							"count",
+							"feeds"
 						],
 						"type": "object"
 					}
 				]
+			},
+			"Query": {
+				"properties": {
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id"
+				],
+				"type": "object"
 			},
 			"SearchFeed": {
 				"allOf": [
@@ -525,6 +652,460 @@
 					}
 				]
 			},
+			"Funding": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"url"
+				],
+				"type": "object"
+			},
+			"PodcastsByIdFeed": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/SearchFeed"
+					},
+					{
+						"properties": {
+							"funding": {
+								"$ref": "#/components/schemas/Funding"
+							},
+							"value": {},
+							"chash": {
+								"type": "string"
+							},
+							"itunesType": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"funding",
+							"value",
+							"chash",
+							"itunesType"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"PodcastsByIdResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"feed": {
+								"$ref": "#/components/schemas/PodcastsByIdFeed"
+							},
+							"query": {
+								"$ref": "#/components/schemas/Query"
+							}
+						},
+						"required": [
+							"feed",
+							"query"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"Medium": {
+				"enum": [
+					"audiobook",
+					"blog ",
+					"film",
+					"music",
+					"newsletter",
+					"podcast",
+					"video"
+				],
+				"type": "string"
+			},
+			"LiveStatus": {
+				"enum": [
+					"ended",
+					"live"
+				],
+				"type": "string"
+			},
+			"EpisodesByIdLiveItems": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/RecentEpisodeFeed"
+					},
+					{
+						"properties": {
+							"transcriptUrl": {
+								"type": "string"
+							},
+							"chaptersUrl": {
+								"type": "string"
+							},
+							"feedDuplicateOf": {
+								"type": "number",
+								"format": "double"
+							},
+							"feedDead": {
+								"type": "number",
+								"format": "double"
+							},
+							"duration": {
+								"type": "number",
+								"format": "double"
+							},
+							"contentLink": {
+								"type": "string"
+							},
+							"status": {
+								"$ref": "#/components/schemas/LiveStatus"
+							},
+							"endTime": {
+								"type": "number",
+								"format": "double"
+							},
+							"startTime": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"transcriptUrl",
+							"chaptersUrl",
+							"feedDuplicateOf",
+							"feedDead",
+							"duration",
+							"contentLink",
+							"status",
+							"endTime",
+							"startTime"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"TranscriptType": {
+				"enum": [
+					"text/plain",
+					"text/html",
+					"application/srt",
+					"text/vtt",
+					"application/json"
+				],
+				"type": "string"
+			},
+			"Transcript": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/TranscriptType"
+					},
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type",
+					"url"
+				],
+				"type": "object"
+			},
+			"Soundbite": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"startTime": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"title",
+					"duration",
+					"startTime"
+				],
+				"type": "object"
+			},
+			"Person": {
+				"properties": {
+					"img": {
+						"type": "string"
+					},
+					"href": {
+						"type": "string"
+					},
+					"group": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"img",
+					"href",
+					"group",
+					"role",
+					"name",
+					"id"
+				],
+				"type": "object"
+			},
+			"SocialProtocol": {
+				"enum": [
+					"disabled",
+					"activitypub",
+					"twitter",
+					"lightning"
+				],
+				"type": "string"
+			},
+			"SocialInteract": {
+				"properties": {
+					"priority": {
+						"type": "number",
+						"format": "double"
+					},
+					"accountUrl": {
+						"type": "string"
+					},
+					"accountId": {
+						"type": "string"
+					},
+					"protocol": {
+						"$ref": "#/components/schemas/SocialProtocol"
+					},
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"priority",
+					"accountUrl",
+					"accountId",
+					"protocol",
+					"url"
+				],
+				"type": "object"
+			},
+			"Value": {
+				"enum": [
+					"any",
+					"lightning",
+					"hive",
+					"webmonetization"
+				],
+				"type": "string"
+			},
+			"ValueModel": {
+				"properties": {
+					"suggested": {
+						"type": "string"
+					},
+					"method": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/Value"
+					}
+				},
+				"required": [
+					"suggested",
+					"method",
+					"type"
+				],
+				"type": "object"
+			},
+			"Destination": {
+				"properties": {
+					"customValue": {
+						"type": "string"
+					},
+					"customKey": {
+						"type": "string"
+					},
+					"fee": {
+						"type": "boolean"
+					},
+					"split": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {},
+					"address": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"customValue",
+					"customKey",
+					"fee",
+					"split",
+					"type",
+					"address",
+					"name"
+				],
+				"type": "object"
+			},
+			"ValueForValue": {
+				"properties": {
+					"destinations": {
+						"items": {
+							"$ref": "#/components/schemas/Destination"
+						},
+						"type": "array"
+					},
+					"model": {
+						"$ref": "#/components/schemas/ValueModel"
+					}
+				},
+				"required": [
+					"destinations",
+					"model"
+				],
+				"type": "object"
+			},
+			"EpisodesByIdItems": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/RecentEpisodeFeed"
+					},
+					{
+						"properties": {
+							"value": {
+								"$ref": "#/components/schemas/ValueForValue"
+							},
+							"socialInteract": {
+								"items": {
+									"$ref": "#/components/schemas/SocialInteract"
+								},
+								"type": "array"
+							},
+							"persons": {
+								"items": {
+									"$ref": "#/components/schemas/Person"
+								},
+								"type": "array"
+							},
+							"soundbites": {
+								"items": {
+									"$ref": "#/components/schemas/Soundbite"
+								},
+								"type": "array"
+							},
+							"soundbite": {
+								"$ref": "#/components/schemas/Soundbite"
+							},
+							"transcripts": {
+								"items": {
+									"$ref": "#/components/schemas/Transcript"
+								},
+								"type": "array"
+							},
+							"transcriptUrl": {
+								"type": "string"
+							},
+							"chaptersUrl": {
+								"type": "string"
+							},
+							"feedDuplicateOf": {
+								"type": "number",
+								"format": "double"
+							},
+							"feedDead": {
+								"type": "number",
+								"format": "double"
+							},
+							"duration": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"value",
+							"socialInteract",
+							"persons",
+							"soundbites",
+							"soundbite",
+							"transcripts",
+							"transcriptUrl",
+							"chaptersUrl",
+							"feedDuplicateOf",
+							"feedDead",
+							"duration"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"EpisodesByIdResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BaseResponse"
+					},
+					{
+						"properties": {
+							"query": {
+								"anyOf": [
+									{
+										"type": "string"
+									},
+									{
+										"items": {
+											"type": "string"
+										},
+										"type": "array"
+									}
+								]
+							},
+							"count": {
+								"type": "number",
+								"format": "double"
+							},
+							"items": {
+								"items": {
+									"$ref": "#/components/schemas/EpisodesByIdItems"
+								},
+								"type": "array"
+							},
+							"liveItems": {
+								"items": {
+									"$ref": "#/components/schemas/EpisodesByIdLiveItems"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"query",
+							"count",
+							"items",
+							"liveItems"
+						],
+						"type": "object"
+					}
+				]
+			},
 			"SearchResponse": {
 				"allOf": [
 					{
@@ -582,7 +1163,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/categories": {
+		"/categories/list": {
 			"get": {
 				"operationId": "GetCategories",
 				"responses": {
@@ -601,7 +1182,7 @@
 				"parameters": []
 			}
 		},
-		"/stats": {
+		"/stats/current": {
 			"get": {
 				"operationId": "GetStats",
 				"responses": {
@@ -620,7 +1201,7 @@
 				"parameters": []
 			}
 		},
-		"/trending": {
+		"/podcasts/trending": {
 			"get": {
 				"operationId": "GetTrending",
 				"responses": {
@@ -670,11 +1251,48 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"in": "query",
+						"name": "notcat",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/recentEpisodes": {
+		"/recent/soundbites": {
+			"get": {
+				"operationId": "GetSoundbites",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SoundbitesResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "max",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/recent/episodes": {
 			"get": {
 				"operationId": "GetRecentEpisodes",
 				"responses": {
@@ -708,58 +1326,36 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "excludeString",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fulltext",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
 					}
 				]
 			}
 		},
-		"/podcastsFeed": {
+		"/recent/feeds": {
 			"get": {
-				"operationId": "GetPodcastsFeed",
+				"operationId": "GetRecentFeeds",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/TrendingResponse"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/episodesFeed": {
-			"get": {
-				"operationId": "GetEpisodesFeed",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TrendingResponse"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/soundbites": {
-			"get": {
-				"operationId": "GetSoundbites",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/SoundbitesResponse"
+									"$ref": "#/components/schemas/RecentFeedsResponse"
 								}
 							}
 						}
@@ -775,11 +1371,129 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "lang",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "since",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "cat",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "notcat",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/search": {
+		"/podcasts/byfeedid": {
+			"get": {
+				"operationId": "GetPodcastsById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PodcastsByIdResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "id",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/podcasts/bymedium": {
+			"get": {
+				"operationId": "GetPodcastsByMedium",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PodcastsByIdResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "medium",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Medium"
+						}
+					}
+				]
+			}
+		},
+		"/episodes/byfeedid": {
+			"get": {
+				"operationId": "GetEpisodesById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EpisodesByIdResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "id",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/search/byterm": {
 			"get": {
 				"operationId": "SearchByTerm",
 				"responses": {
@@ -824,6 +1538,22 @@
 					{
 						"in": "query",
 						"name": "fulltext",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "val",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Value"
+						}
+					},
+					{
+						"in": "query",
+						"name": "aponly",
 						"required": false,
 						"schema": {
 							"type": "boolean"
