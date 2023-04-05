@@ -59,7 +59,7 @@ router.get("/podcasts/trending", async (_req, res) => {
     const lang: string = _req.query.lang as unknown as string;
     const since: number = _req.query.since as unknown as number;
     const cat: string = _req.query.cat as unknown as string;
-    const notcat: string = _req.query.cat as unknown as string;
+    const notcat: string = _req.query.notcat as unknown as string;
     const response = await controller.getTrending(max, lang, since, cat, notcat);
     return res.send(response);
   } catch (error) {
@@ -133,7 +133,7 @@ router.get("/recent/feeds", async (_req, res) => {
     const lang: string = _req.query.lang as unknown as string;
     const since: number = _req.query.since as unknown as number;
     const cat: string = _req.query.cat as unknown as string;
-    const notcat: string = _req.query.cat as unknown as string;
+    const notcat: string = _req.query.notcat as unknown as string;
     const response = await controller.getRecentFeeds(max, lang, since, cat, notcat);
     return res.send(response);
   } catch (error) {
